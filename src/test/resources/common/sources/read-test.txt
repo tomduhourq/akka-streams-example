@@ -1,0 +1,2 @@
+Verifying behaviour of Akka Stream sources, flows and sinks can be done using various code patterns and libraries.
+It is important to keep your data processing pipeline as separate sources, flows and sinks.

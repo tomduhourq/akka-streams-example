@@ -1,0 +1,7 @@
+scala
+akka
+playframework
+flink
+kafka
+lagom
+spark

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <title>Bank account</title>
+    </head>
+    <style>
+        .content {
+            display:flex;
+            flex-direction: column;
+            width: 450px;
+            margin: 0 auto;
+        }
+    </style>
+    <body>
+        <div id="accountDiv" class="content">
+            <label>Name:</label>
+            <textarea id="name"></textarea>
+            <label>Amount:</label>
+            <textarea id="amount"></textarea>
+            <button id="withdraw">Withdraw</button>
+            <button id="deposit">Deposit</button>
+        </div>
+
+        <script language="javascript">
+            var $withdraw = $("#withdraw"),
+                $deposit  = $("#deposit"),
+                $name     = $("#name"),
+                $amount   = $("#amount"),
+                webSocket = new WebSocket("ws://localhost:8080/ws");
+
+            webSocket.onopen = function(event){
+                console.log(event);
+                $withdraw.on('click', function() {
+                    var name = $name.val(),
+                        amount = $amount.val(),
+                        action = 'Withdraw';
+
+                    webSocket.send(action + ',' + name + ',' + amount)
+                });
+                $deposit.on('click', function() {
+                    var name = $name.val(),
+                        amount = $amount.val(),
+                        action = 'Deposit';
+
+                    webSocket.send(action + ',' + name + ',' + amount)
+                });
+            };
+            webSocket.onmessage = function(event){
+                console.log(event);
+            };
+            webSocket.onclose = function(event){
+                console.log("Connection closed");
+            };
+        </script>
+    </body>
+</html>

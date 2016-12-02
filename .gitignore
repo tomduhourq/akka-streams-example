@@ -1,0 +1,10 @@
+.idea/
+target/
+*.project
+*.settings/
+.cache
+.classpath
+.DS_Store
+**/*.DS_Store
+*java/
+*scala-2.11/
