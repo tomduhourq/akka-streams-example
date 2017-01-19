@@ -4,7 +4,7 @@ val projectName = "scala-hashtags-akka-streams"
 
 name := projectName
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.1"
 
 version := "1.0"
 

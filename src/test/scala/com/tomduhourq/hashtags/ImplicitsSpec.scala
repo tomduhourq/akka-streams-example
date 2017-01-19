@@ -2,7 +2,7 @@ package com.tomduhourq.hashtags
 
 import scala.concurrent.Future
 
-class ImplicitsSpec extends BaseSpec with ActorSystemTesting {
+class ImplicitsSpec extends BaseSpec with ActorSystemGracefulShutdown {
 
   //Future pimping
   def simpleFuture = Future { println("Success!") }

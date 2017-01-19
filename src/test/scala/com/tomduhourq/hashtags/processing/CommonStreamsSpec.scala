@@ -8,11 +8,11 @@ import com.tomduhourq.hashtags.domain.InterestingTweet
 import com.tomduhourq.hashtags.processing.CommonSources._
 import com.tomduhourq.hashtags.processing.CommonFlows._
 import com.tomduhourq.hashtags.processing.CommonSinks._
-import com.tomduhourq.hashtags.{ActorSystemTesting, BaseSpec}
+import com.tomduhourq.hashtags.{ActorSystemGracefulShutdown, BaseSpec}
 
 import scala.concurrent.Future
 
-class CommonStreamsSpec extends BaseSpec with ActorSystemTesting {
+class CommonStreamsSpec extends BaseSpec with ActorSystemGracefulShutdown {
 
   val readFromFileDirectory = "src/test/resources/common/sources/read-test.txt"
   val readScalaSource = io.Source.fromInputStream(getClass.getResourceAsStream("/common/sources/read-test.txt"))

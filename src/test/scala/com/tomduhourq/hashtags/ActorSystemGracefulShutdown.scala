@@ -4,7 +4,7 @@ import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import org.scalatest.{BeforeAndAfterAll, Suite}
 
-trait ActorSystemTesting extends BeforeAndAfterAll { self: Suite =>
+trait ActorSystemGracefulShutdown extends BeforeAndAfterAll { self: Suite =>
   implicit val system = ActorSystem("test-system")
   implicit val materializer = ActorMaterializer()
   implicit val ec = system.dispatcher
