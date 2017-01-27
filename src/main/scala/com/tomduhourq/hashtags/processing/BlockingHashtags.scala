@@ -33,6 +33,7 @@ object BlockingHashtags extends App with Twitter with FileHandler with AkkaSyste
       via(uniqueInterestingTweetsFlow)
   }
 
+  // Here we go
   val tweetSource = InterestingHashtags.
     map(streamHashtagQuery).
     reduce((acumSources, source) => acumSources.concat(source)).

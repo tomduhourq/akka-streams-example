@@ -13,6 +13,7 @@ object StatusListener extends configuration.Twitter {
   implicit val materializer = ActorMaterializer()
 
   /**
+   * TODO: Graphics on tweets pipeline
    * Creates an actor that will receive Interesting Tweets as input and gets a publisher for us for a specific
    * filter query, which will be one per interesting hashtag
    *
@@ -21,7 +22,7 @@ object StatusListener extends configuration.Twitter {
    */
   def source(query: FilterQuery): Source[InterestingTweet, NotUsed] = {
 
-    val (actorRef, publisher) = Source.actorRef[InterestingTweet](1000, OverflowStrategy.fail).toMat(Sink.asPublisher(true))(Keep.both).run()
+    val (actorRef, publisher) = Source.actorRef[InterestingTweet](1000, OverflowStrategy.backpressure).toMat(Sink.asPublisher(true))(Keep.both).run()
 
     val statusListener = new StatusListener {
       override def onTrackLimitationNotice(numberOfLimitedStatuses: Int): Unit = ()

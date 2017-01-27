@@ -20,14 +20,16 @@ package object basic extends AkkaSystemConfiguration {
   transactionSource.runForeach(println) // Same as transactionSource.runWith(Sink.foreach(println))
 
   // 3) Our first flow, just split by commas and get the list
-  val allRowsFlow = Flow[String] map(_.split(",").toList)
+  val transactionRowToList = (line: String) => line.split(",").toList
+  val allRowsFlow = Flow.fromFunction(transactionRowToList)
 
   // Second test: we got the header :/
   transactionSource.via(allRowsFlow).runForeach(println)
-  transactionSource.map(_.split(",").toList).runWith(Sink.foreach(println))
+  //transactionSource.map(_.split(",").toList).runWith(Sink.foreach(println))
+  //transactionSource.map(transactionRowToList).runForeach(println)
 
   // Let's take the header out
-  val rows = Flow[String] drop 1 map(_.split(",").toList)
+  val rows = Flow[String] drop 1 map transactionRowToList
 
   // Third test: we now have the two rows
   transactionSource.via(rows).runForeach(println)
@@ -38,7 +40,7 @@ package object basic extends AkkaSystemConfiguration {
   final case class Withdraw(name: String, amount: Double) extends Transaction
 
   // 6) create a flow that just gets a list of strings and gets a Transaction for us
-  // WAWRNING: This can fail if the string `amount` is not parseable to Double
+  // WARNING: This can fail if the string `amount` is not parseable to Double
   val parsed = Flow[List[String]] collect {
     case "Withdraw" :: name :: amount :: _ => Withdraw(name, amount.toDouble)
     case "Deposit" :: name :: amount :: _ => Deposit(name, amount.toDouble)
@@ -55,12 +57,12 @@ package object basic extends AkkaSystemConfiguration {
     case Withdraw(name, amount) => bank.updated(name, bank.getOrElse(name, 0D) - amount)
   }
 
-  val applyTransactionsSink: Sink[Transaction, Future[Map[String, Double]]] =
+  val applyTransactionsSink: Sink[Transaction, Future[Bank]] =
     Sink.fold(Map.empty[String, Double])((bank, transaction) => applyTransaction(transaction, bank))
 
   // 8) Now we want to apply this Sink to our parsed transactions. To do that we need to materialize
   // all the blueprint to a future of the output, when the upstream completes
-  val parseAndApplyTransactions: Sink[String, Future[Map[String, Double]]] =
+  val parseAndApplyTransactions: Sink[String, Future[Bank]] =
     rows.via(parsed).toMat(applyTransactionsSink)(Keep.right)
 
   val pipeline = transactionSource.toMat(parseAndApplyTransactions)(Keep.right)

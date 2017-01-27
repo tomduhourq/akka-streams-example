@@ -62,6 +62,7 @@ object Server extends App {
     case Withdraw(name, amount) => bank.updated(name, bank.getOrElse(name, 0D) - amount)
   }
 
+  // See over json4s transformation
   val parseAndApplyWS =
     Flow[Message].collect {
       case TextMessage.Strict(txt) => txt
