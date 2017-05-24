@@ -31,7 +31,7 @@ will output some tests results, they test most of the machinery behind these exa
 
 PS: Don't forget to fill in your twitter creds in order to access the Twitter API. This is on the `Twitter.scala` file.
 
-##API
+## API
 
 - `/` will pop up the bank accounts backendish frontend, if you fill in a name and an amount and click on an action you should be able
 to see the bank's current state if you inspect what's going on on the browser's console
@@ -39,7 +39,7 @@ to see the bank's current state if you inspect what's going on on the browser's 
 - `/tweets/blocking` will bring up the contents of a local file in your `target` folder. You need to run `BlockingHashtags.scala` before.
 - `/tweets/streaming` will bring up the contents of a local file in your `target` folder, product of running `StreamingHashtags.scala`
 
-##Docker
+## Docker
 
 I used the awesome [sbt-docker](https://github.com/marcuslonnberg/sbt-docker) plugin to push this project and run it as a container
 anywhere, free of installing Scala or sbt.
@@ -50,7 +50,7 @@ $ sbt dockerBuildAndPush
 ```
 should do the trick for you.
 
-##Contributing
+## Contributing
 
 Feel obviously free to contribute to this project, open a pull request, or an issue and I'll be happy to address it. I've just
 started out with this awesome tool, constructive criticism is accepted.
